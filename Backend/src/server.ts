@@ -7,6 +7,7 @@ require('dotenv').config();
 
 var companyRoutes = require('./routes/companyRoutes');
 var employeeRoutes = require('./routes/employeeRoutes');
+var projectsRoutes = require('./routes/projectsRoutes');
 
 const app = express();
 var port = process.env.PORT || 8090;
@@ -23,6 +24,7 @@ app.get('/', (req: any, res: { send: (arg0: string) => void }) => {
 // routes use
 app.use('/api/', companyRoutes);
 app.use('/api/', employeeRoutes);
+app.use('/api/company/', projectsRoutes);
 
 // Start the server
 const server = createServer(app);
