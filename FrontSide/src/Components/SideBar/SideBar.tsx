@@ -11,16 +11,17 @@ import AddLocationIcon from '@mui/icons-material/AddLocation';
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Link, useLocation } from "react-router-dom";
 import LocalActivityIcon from '@mui/icons-material/LocalActivity';
+import { Typography } from "@mui/material";
 
 const links = [
     {
         path: "/",
-        title: "RamiGay",
+        title: "Admin",
         Icon: CommuteIcon,
     },
     {
-        path: "/marshruts",
-        title: "Pidoras",
+        path: "/projects",
+        title: "Projects",
         Icon: CommuteIcon,
     }
 ];
@@ -49,7 +50,21 @@ function SideBar() {
                             <ListItemIcon>
                                 <Icon style={path === location.pathname ? { color: '#fff' } : {}} />
                             </ListItemIcon>
-                            <ListItemText primary={title} />
+
+                            <Typography sx={path == location.pathname ? {
+
+                                fontFamily: "sans-serif",
+                                fontWeight: 600,
+                                color: "white"
+                            } : {
+
+                                fontFamily: "sans-serif",
+                                fontWeight: 500,
+                                color: "black"
+                            }}>
+                                {title}
+                            </Typography>
+
                         </ListItemButton>
                     </ListItem>
                 ))}

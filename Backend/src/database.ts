@@ -1,15 +1,15 @@
-const sql = require('mssql');
-require('dotenv').config();
+const sql = require("mssql");
+require("dotenv").config();
 
 const dbConfig = {
-  server: process.env.DB_SERVER || 'localhost',
-  user: process.env.DB_USER || 'your_username',
-  password: process.env.DB_PASSWORD || 'your_password',
-  database: process.env.DB_NAME || 'your_database_name',
+  server: process.env.DB_SERVER || "localhost",
+  user: process.env.DB_USER || "your_username",
+  password: process.env.DB_PASSWORD || "your_password",
+  database: process.env.DB_NAME || "your_database_name",
   options: {
     trustedconnection: true,
     enableArithAbort: true,
-    instancename: 'SQLEXPRESS',
+    instancename: "SQLEXPRESS",
   },
   port: 1433,
   encrypt: false, // not good for production
@@ -52,6 +52,5 @@ const db = async function (query: any, params: any) {
     await pool.close();
   }
 };
-
 
 module.exports = { db, dbConfig, sql };

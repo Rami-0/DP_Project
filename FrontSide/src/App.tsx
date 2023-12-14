@@ -3,7 +3,7 @@ import useRoutes from './hooks/useRoutes';
 
 function App() {
 
-  const isAuth = false
+  const isAuth = true
 
   const routes = useRoutes({ isAuth })
 

@@ -3,6 +3,9 @@ import { Routes, Route } from "react-router-dom";
 import SignIn from "../pages/SignIn";
 import HomePage from "../pages/HomePage";
 import SideBar from "../Components/SideBar/SideBar";
+import Projects from "../pages/Projects/index";
+import Companies from "../pages/Companies";
+import CompanyPage from "../pages/Companies/Company";
 // import SideBar from "../components/sidebar/SideBar";
 // import BookPlacePage from "../pages/HomePage/BookPlacePage";
 // import HomePage from "../pages/HomePage/HomePage";
@@ -22,7 +25,8 @@ interface IRoute {
     isAuth: boolean;
 }
 
-const useRoutes: React.FC<IRoute> = (isAuth) => {
+const useRoutes: React.FC<IRoute> = ({ isAuth }) => {
+
     if (!isAuth) {
         return (
             <Routes>
@@ -37,7 +41,12 @@ const useRoutes: React.FC<IRoute> = (isAuth) => {
                 <SideBar />
             </Grid>
             <Grid item lg={9.5} md={10}>
-                <HomePage />
+                <Routes>
+                    <Route path="/projects" element={<Projects />} />
+                    <Route path="/" element={<Companies />} />
+                    <Route path="/:id" element={<CompanyPage />}></Route>
+                    <Route path="" />
+                </Routes>
             </Grid>
         </Grid >
     );
