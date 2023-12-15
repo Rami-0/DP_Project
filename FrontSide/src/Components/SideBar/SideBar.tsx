@@ -16,14 +16,10 @@ import { Typography } from "@mui/material";
 const links = [
     {
         path: "/",
-        title: "Admin",
+        title: "Companies",
         Icon: CommuteIcon,
     },
-    {
-        path: "/projects",
-        title: "Projects",
-        Icon: CommuteIcon,
-    }
+
 ];
 
 function SideBar() {
@@ -68,16 +64,6 @@ function SideBar() {
                         </ListItemButton>
                     </ListItem>
                 ))}
-                <br />
-                <br />
-                <ListItem disablePadding onClick={onLogout}>
-                    <ListItemButton>
-                        <ListItemIcon>
-                            <LogoutIcon />
-                        </ListItemIcon>
-                        <ListItemText primary={"Выйти"} />
-                    </ListItemButton>
-                </ListItem>
             </List>
         </div>
     );
