@@ -45,13 +45,6 @@ router.post(
 		const { Name, ProjectManagerID, StartDate, EndDate, Priority, ExecutorCompanyID } = req.body;
 		const CustomerCompanyID = req.params.companyID;
 
-    let modifiedExecutorCompanyID: any = ExecutorCompanyID;
-
-
-		if (typeof ExecutorCompanyID === 'number') {
-      modifiedExecutorCompanyID = null;
-		}
-
 		try {
 			const result = await database.db('EXEC InsertProject @Name, @ProjectManagerID, @StartDate, @EndDate, @Priority, @CustomerCompanyID, @ExecutorCompanyID', {
 				Name,
@@ -60,7 +53,7 @@ router.post(
 				EndDate,
 				Priority,
 				CustomerCompanyID,
-				modifiedExecutorCompanyID,
+				ExecutorCompanyID,
 			});
 
 			const newProjectId = result[0].ProjectID; // Assuming your stored procedure returns the new project ID
@@ -119,7 +112,10 @@ router.delete('/:companyID/projects/:id', async (req: { params: { id: any; compa
 		res.status(500).json({ error: 'Internal Server Error' });
 	}
 });
+
+
 // ** Related to employees ** //
+
 
 
 module.exports = router;

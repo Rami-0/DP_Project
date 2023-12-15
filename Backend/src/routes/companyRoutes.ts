@@ -71,4 +71,19 @@ router.delete('/companies/:id', async (req: { params: { id: any } }, res: { json
 	}
 });
 
+// Get all users for a company
+router.get('/:companyId/employees', async (req, res) => {
+  const companyId = req.params.companyId;
+
+  try {
+    // Assuming you have a stored procedure to get all users for a specific company
+    const users = await database.db('EXEC GetEmployeesByCompany @CompanyId', { CompanyId: companyId });
+    res.json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
 module.exports = router;
