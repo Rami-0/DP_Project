@@ -16,20 +16,6 @@ const dbConfig = {
   trustServerCertificate: true, // Add this line
 };
 
-// const pool = new sql.ConnectionPool(dbConfig);
-
-// const db = async function (query: any, params = []) {
-//   try {
-//     await pool.connect();
-//     const result = await pool.request().query(query, params);
-//     return result.recordset;
-//   } catch (error) {
-//     console.error(error);
-//     throw error;
-//   }
-//   // Do not close the pool here
-// };
-
 const pool = new sql.ConnectionPool(dbConfig);
 
 const db = async function (query: any, params: any) {

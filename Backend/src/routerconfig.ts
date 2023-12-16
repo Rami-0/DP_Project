@@ -1,7 +1,8 @@
 import express from 'express';
+import { Request, Response } from 'express';
 const router = express.Router();
 
-router.use((request: any, response: any, next: () => void) => {
+router.use((request: Request, response: Response, next: () => void) => {
 	next();
 });
 
