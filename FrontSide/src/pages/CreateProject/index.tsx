@@ -88,7 +88,7 @@ const CreateProject = () => {
                 id="demo-simple-select"
                 value={PmId}
                 label=""
-                onChange={(e: React.ChangeEvent<{ value: unknown }>) => setPMId(e.target.value as number)}
+                onChange={(e: any) => setPMId(e.target.value as number)}
             >
                 {pms?.map((el: any) => <MenuItem key={el.FirstName} value={el.EmployeeID}>{el.FirstName} {el.LastName}</MenuItem>)}
             </Select>
@@ -98,11 +98,11 @@ const CreateProject = () => {
                 id="demo-simple-select"
                 value={companyId}
                 label=""
-                onChange={(e: React.ChangeEvent<{ value: unknown }>) => setCompanyId(e.target.value as number)}
+                onChange={(e: any) => setCompanyId(e.target.value as number)}
             >
                 {companies?.map((el: any) => <MenuItem key={el.CompanyID} value={el.CompanyID}>{el.Name}</MenuItem>)}
             </Select>
-            <Button onClick={() => onCreate() }>
+            <Button onClick={() => onCreate()}>
                 Create Project
             </Button>
         </Grid>
