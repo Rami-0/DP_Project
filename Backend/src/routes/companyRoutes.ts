@@ -1,14 +1,42 @@
 // @ts-nocheck
 const database = require('../database');
 const router = require('../routerconfig');
+import log from '../utils/logger';
 
 // Get all companies
+
+/**
+ * @swagger
+ * /companies:
+ *   get:
+ *     summary: Get a list of companies
+ *     description: Returns a list of companies.
+ *     tags:
+ *       - Companies
+ *     responses:
+ *       200:
+ *         description: Successful response
+ *         content:
+ *           application/json:
+ *             example:
+ *               companies:
+ *                 - name: Company A
+ *                   id: 1
+ *                 - name: Company B
+ *                   id: 2
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Internal Server Error
+ */
 router.get('/companies', async (req: any, res: { json: (arg0: any) => void; status: (arg0: number) => { (): any; new (): any; json: { (arg0: { error: string }): void; new (): any } } }) => {
 	try {
 		const companies = await database.db('EXEC GetAllCompanies');
 		res.json(companies);
 	} catch (error) {
-		console.error(error);
+		log.error(error);
 		res.status(500).json({ error: 'Internal Server Error' });
 	}
 });
@@ -25,7 +53,7 @@ router.get('/companies/:id', async (req: { params: { id: any } }, res: { json: (
 			res.status(404).json({ error: 'Company not found' });
 		}
 	} catch (error) {
-		console.error(error);
+		log.error(error);
 		res.status(500).json({ error: 'Internal Server Error' });
 	}
 });
@@ -33,27 +61,27 @@ router.get('/companies/:id', async (req: { params: { id: any } }, res: { json: (
 // Add a new company
 router.post('/companies', async (req: { body: { name: any } }, res: { json: (arg0: { success: boolean; companyId: any }) => void; status: (arg0: number) => { (): any; new (): any; json: { (arg0: { error: string }): void; new (): any } } }) => {
 	const { name } = req.body;
-	
+
 	try {
 		const result = await database.db(`EXEC InsertCompany ${name}`);
 		const newCompanyId = result[0].CompanyId; // Assuming your stored procedure returns the new company ID
 		res.json({ success: true, companyId: newCompanyId });
 	} catch (error) {
-		console.error(error);
+		log.error(error);
 		res.status(500).json({ error: 'Internal Server Error' });
 	}
 });
 
 // Update an existing company
-router.put('/companies/:id', async (req: { params: { id: any }; body: { name: any } }, res: { json: (arg0: { success: boolean }) => void; status: (arg0: number) => { (): any; new (): any; json: { (arg0: { error: string }): void; new (): any } } }) => {
+router.put('/companies/:id', async (req: { params: { id: any }; body: { CompanyName: any } }, res: { json: (arg0: { success: boolean }) => void; status: (arg0: number) => { (): any; new (): any; json: { (arg0: { error: string }): void; new (): any } } }) => {
 	const companyId = req.params.id;
-	const { name } = req.body;
+	const { CompanyName } = req.body;
 
 	try {
-		await database.db(`EXEC UpdateCompany ${companyId}, ${name}`);
+		await database.db('EXEC UpdateCompany @CompanyId, @CompanyName', { companyId, CompanyName });
 		res.json({ success: true });
 	} catch (error) {
-		console.error(error);
+		log.error(error);
 		res.status(500).json({ error: 'Internal Server Error' });
 	}
 });
@@ -66,24 +94,23 @@ router.delete('/companies/:id', async (req: { params: { id: any } }, res: { json
 		await database.db(`EXEC DeleteCompany ${companyId}`);
 		res.json({ success: true });
 	} catch (error) {
-		console.error(error);
+		log.error(error);
 		res.status(500).json({ error: 'Internal Server Error' });
 	}
 });
 
 // Get all users for a company
 router.get('/:companyId/employees', async (req, res) => {
-  const companyId = req.params.companyId;
+	const companyId = req.params.companyId;
 
-  try {
-    // Assuming you have a stored procedure to get all users for a specific company
-    const users = await database.db('EXEC GetEmployeesByCompany @CompanyId', { CompanyId: companyId });
-    res.json(users);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
+	try {
+		// Assuming you have a stored procedure to get all users for a specific company
+		const users = await database.db('EXEC GetEmployeesByCompany @CompanyId', { CompanyId: companyId });
+		res.json(users);
+	} catch (error) {
+		log.error(error);
+		res.status(500).json({ error: 'Internal Server Error' });
+	}
 });
-
 
 module.exports = router;
