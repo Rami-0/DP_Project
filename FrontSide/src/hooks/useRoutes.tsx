@@ -9,6 +9,8 @@ import CompanyPage from "../pages/Companies/Company";
 import ProjectPage from "../pages/ProjectPage";
 import CreateProject from "../pages/CreateProject";
 import CreateCompany from "../pages/Companies/Create";
+import Employees from "../pages/Employees";
+import EmployeePage from "../pages/EmployeePage";
 // import SideBar from "../components/sidebar/SideBar";
 // import BookPlacePage from "../pages/HomePage/BookPlacePage";
 // import HomePage from "../pages/HomePage/HomePage";
@@ -48,9 +50,11 @@ const useRoutes: React.FC<IRoute> = ({ isAuth }) => {
                     <Route path="/projects" element={<Projects />} />
                     <Route path="/" element={<Companies />} />
                     <Route path="/:id" element={<CompanyPage />}></Route>
-                    <Route path="/:companyId/projects/:id" element={<ProjectPage/>}/>
-                    <Route path=":id/createProject" element={<CreateProject/>}></Route>
-                    <Route path="/createCompanies" element={<CreateCompany/>}></Route>
+                    <Route path="/:companyId/projects/:id" element={<ProjectPage />} />
+                    <Route path=":id/createProject" element={<CreateProject />}></Route>
+                    <Route path="/createCompanies" element={<CreateCompany />}></Route>
+                    <Route path="/Employees" element={<Employees />}></Route>
+                    <Route path="/Employees/:id" element={<EmployeePage />}></Route>
                 </Routes>
             </Grid>
         </Grid >

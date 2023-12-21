@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { api } from '../../../Api/Api';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import ProjectItem from '../../../Components/projectItem';
 import { Button, Grid, TextField, Typography } from '@mui/material';
 import SettingsSharpIcon from '@mui/icons-material/SettingsSharp';
 import SaveSharpIcon from '@mui/icons-material/SaveSharp';
 import DeleteOutlineSharpIcon from '@mui/icons-material/DeleteOutlineSharp';
+import Preloader from '../../../Components/Preloader/Preloader';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@material-ui/core';
+
 
 const CompanyPage = () => {
 
@@ -39,17 +42,26 @@ const CompanyPage = () => {
         }
     }
 
+    const [employees, setEmployees] = useState<any>(null);
+
+    const getEmployees = async () => {
+        setLoading(true)
+        const res = await api.get(`api/${id}/employees`).finally(() => setLoading(false));
+        setEmployees(res.data)
+    }
+
     const onUpdate = async () => {
-        const res = await api.put(`api/companies/${id}`, { CompanyID: id, CompanyName: title })
-        console.log(res);
+        await api.put(`api/companies/${id}`, { CompanyID: id, CompanyName: title })
+        setSettings(false)
     }
 
     useEffect(() => {
         getUniqCompany()
         getProjects()
+        getEmployees()
     }, [])
 
-    if (isLoading && title != null) return <h1>Loading.....</h1>
+    if (isLoading) return <Preloader />
     return (
         <div style={{ padding: 20 }}>
             <Grid sx={{
@@ -68,7 +80,6 @@ const CompanyPage = () => {
                         :
 
                         <h1>{title}</h1>
-
                 }
                 <Grid>
                     <Button onClick={() => setSettings(!isSetting)} sx={{
@@ -117,6 +128,24 @@ const CompanyPage = () => {
                     </Grid>
                 </Link>
             </Grid>
+            <hr style={{ marginTop: 30, marginBottom: 30 }} />
+            <h1 style={{ marginBottom: 30 }}>Company Employees</h1>
+            <TableContainer component={Paper}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Name</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {employees?.map(({ FirstName, LastName }: any) => (
+                            <TableRow key={id}>
+                                <TableCell>{FirstName} {LastName}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
         </div>
     )
 }
