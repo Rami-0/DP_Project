@@ -3,9 +3,6 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import GroupIcon from '@mui/icons-material/Group';
-
 import CommuteIcon from "@mui/icons-material/Commute";
 import AddLocationIcon from '@mui/icons-material/AddLocation';
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -17,6 +14,11 @@ const links = [
     {
         path: "/",
         title: "Companies",
+        Icon: CommuteIcon,
+    },
+    {
+        path: "/Employees",
+        title: "Employees",
         Icon: CommuteIcon,
     },
 
