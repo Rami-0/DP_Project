@@ -2,6 +2,18 @@
 const database = require('../database');
 const router = require('../routerconfig');
 
+// 
+router.get('/:id/workers',  async (req, res) => {
+  const projectId = req.params.id;
+
+  try {
+    const workers = await database.db('EXEC GetEmployeesByProject @ProjectId', { ProjectId: projectId });
+    res.json(workers);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 // Add an employee to a project
 router.post('/:projectId/workers/:employeeId', async (req, res) => {
   const projectId = req.params.projectId;

@@ -2,41 +2,16 @@
 const database = require('../database');
 const router = require('../routerconfig');
 import log from '../utils/logger';
+import { sendInReports } from '../server';
 
 // Get all companies
-
-/**
- * @swagger
- * /companies:
- *   get:
- *     summary: Get a list of companies
- *     description: Returns a list of companies.
- *     tags:
- *       - Companies
- *     responses:
- *       200:
- *         description: Successful response
- *         content:
- *           application/json:
- *             example:
- *               companies:
- *                 - name: Company A
- *                   id: 1
- *                 - name: Company B
- *                   id: 2
- *       500:
- *         description: Internal Server Error
- *         content:
- *           application/json:
- *             example:
- *               error: Internal Server Error
- */
 router.get('/companies', async (req: any, res: { json: (arg0: any) => void; status: (arg0: number) => { (): any; new (): any; json: { (arg0: { error: string }): void; new (): any } } }) => {
 	try {
 		const companies = await database.db('EXEC GetAllCompanies');
 		res.json(companies);
 	} catch (error) {
 		log.error(error);
+		sendInReports(error.toString());
 		res.status(500).json({ error: 'Internal Server Error' });
 	}
 });
@@ -51,9 +26,11 @@ router.get('/companies/:id', async (req: { params: { id: any } }, res: { json: (
 			res.json(company);
 		} else {
 			res.status(404).json({ error: 'Company not found' });
+			sendInReports('Company not found');
 		}
 	} catch (error) {
 		log.error(error);
+		sendInReports(error.toString());
 		res.status(500).json({ error: 'Internal Server Error' });
 	}
 });
@@ -66,6 +43,7 @@ router.post('/companies', async (req: { body: { name: any } }, res: { json: (arg
 		const result = await database.db(`EXEC InsertCompany ${name}`);
 		const newCompanyId = result[0].CompanyId; // Assuming your stored procedure returns the new company ID
 		res.json({ success: true, companyId: newCompanyId });
+		sendInReports("addedComapany")
 	} catch (error) {
 		log.error(error);
 		res.status(500).json({ error: 'Internal Server Error' });

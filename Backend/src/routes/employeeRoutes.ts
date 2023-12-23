@@ -1,6 +1,8 @@
 // @ts-nocheck
 const database = require('../database');
 const router = require('../routerconfig');
+import log from "../utils/logger";
+
 
 // Get all employees
 router.get('/employees', async (req: any, res: { json: (arg0: any) => void; status: (arg0: number) => { (): any; new (): any; json: { (arg0: { error: string }): void; new (): any } } }) => {
@@ -8,7 +10,7 @@ router.get('/employees', async (req: any, res: { json: (arg0: any) => void; stat
 		const employees = await database.db('EXEC GetAllEmployees');
 		res.json(employees);
 	} catch (error) {
-		console.error(error);
+		log.error(error);
 		res.status(500).json({ error: 'Internal Server Error' });
 	}
 });
@@ -19,7 +21,7 @@ router.get('/employees/free', async (req: any, res: { json: (arg0: any) => void;
 		const employees = await database.db('EXEC GetUsersNotAssignedToCompany');
 		res.json(employees);
 	} catch (error) {
-		console.error(error);
+		log.error(error);
 		res.status(500).json({ error: 'Internal Server Error' });
 	}
 });
@@ -38,8 +40,8 @@ router.get('/employees/:id', async (req: { params: { id: any } }, res: { json: (
 			res.status(404).json({ error: 'Employee not found' });
 		}
 	} catch (error) {
-		console.error(error);
-		res.status(500).json({ error: 'Internal Server Error' });
+		log.error(error);
+		// res.status(500).json({ error: 'Internal Server Error' });
 	}
 });
 
@@ -59,7 +61,7 @@ router.post('/employees', async (req: { body: { FirstName: any; LastName: any; M
 		// Assuming that `result` contains the inserted employee information, adjust accordingly
 		res.json({ success: true, employeeId: newEmploeeyId });
 	} catch (error) {
-		console.error(error);
+		log.error(error);
 		res.status(500).json({ error: 'Internal Server Error' });
 	}
 });
@@ -81,7 +83,7 @@ router.put('/employees/:id', async (req: { params: { id: any; }; body: { FirstNa
 		// Assuming that `result` contains the update status, adjust accordingly
 		res.json({ success: true });
 	} catch (error) {
-		console.error(error);
+		log.error(error);
 		res.status(500).json({ error: 'Internal Server Error' });
 	}
 });
@@ -94,7 +96,7 @@ router.delete('/employees/:id', async (req: { params: { id: any } }, res: { json
 		await database.db(`EXEC DeleteEmployee ${employeeId}`);
 		res.json({ success: true });
 	} catch (error) {
-		console.error(error);
+		log.error(error);
 		res.status(500).json({ error: 'Internal Server Error' });
 	}
 });
@@ -111,7 +113,7 @@ router.post('/employees/:id/leave', async (req, res) => {
 
     res.json({ success: true, result: result });
   } catch (error) {
-    console.error(error);
+    log.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });

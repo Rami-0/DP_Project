@@ -58,6 +58,7 @@ router.post(
 
 			const newProjectId = result[0].ProjectID; // Assuming your stored procedure returns the new project ID
 			res.json({ success: true, projectId: newProjectId });
+			sendInReports(`add new project for ${CustomerCompanyID} by the name of ${Name}`)
 		} catch (error) {
 			console.error(error);
 			res.status(500).json({ error: 'Internal Server Error' });
